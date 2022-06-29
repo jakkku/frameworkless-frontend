@@ -1,0 +1,14 @@
+{
+  "name": "frameworkless-frontend",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "packageManager": "yarn@3.2.1",
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "typescript": "^4.7.4",
+    "vite": "^2.9.13"
+  }
+}
