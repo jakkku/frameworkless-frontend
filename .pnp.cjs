@@ -33,11 +33,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["@faker-js/faker", "npm:7.3.0"],\
             ["@types/node", "npm:18.0.0"],\
             ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=7ad353"],\
             ["vite", "virtual:7ab4ec0ba6f4a2e61c0958a3c8adb94b87e36080169f0c03ed804886d508652f3e87e8eaabfb80049ae2a7088136475f53c23ef327c8f5f3a29673f95e60d41f#npm:2.9.13"]\
           ],\
           "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["@faker-js/faker", [\
+        ["npm:7.3.0", {\
+          "packageLocation": "./.yarn/cache/@faker-js-faker-npm-7.3.0-210580d28e-ef5b64af30.zip/node_modules/@faker-js/faker/",\
+          "packageDependencies": [\
+            ["@faker-js/faker", "npm:7.3.0"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@gar/promisify", [\
@@ -552,6 +562,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["frameworkless-frontend", "workspace:."],\
+            ["@faker-js/faker", "npm:7.3.0"],\
             ["@types/node", "npm:18.0.0"],\
             ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=7ad353"],\
             ["vite", "virtual:7ab4ec0ba6f4a2e61c0958a3c8adb94b87e36080169f0c03ed804886d508652f3e87e8eaabfb80049ae2a7088136475f53c23ef327c8f5f3a29673f95e60d41f#npm:2.9.13"]\
