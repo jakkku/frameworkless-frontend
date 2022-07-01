@@ -1,7 +1,7 @@
 import { State } from "..";
 
-export default (targetElement: Element, { currentFilter }: State) => {
-  const newFilters = targetElement.cloneNode(true) as Element;
+export default (targetElement: HTMLElement, { currentFilter }: State) => {
+  const newFilters = targetElement.cloneNode(true) as HTMLElement;
 
   Array.from(newFilters.querySelectorAll("li a")).forEach((a) => {
     if (a.textContent === currentFilter) {

@@ -1,5 +1,6 @@
 import Fps from "./Fps";
 import registry from "./registry";
+import applyDiff from "./utils/applyDiff";
 import getTodos from "./utils/getTodos";
 import counterView from "./view/counter";
 import filtersView from "./view/filters";
@@ -26,8 +27,12 @@ const state: State = {
   currentFilter: "All",
 };
 
-window.requestAnimationFrame(() => {
-  const main = document.querySelector(".todoapp")!;
-  const newMain = registry.renderRoot(main, state);
-  main.replaceWith(newMain);
-});
+const render = () => {
+  window.requestAnimationFrame(() => {
+    const main = document.querySelector(".todoapp")! as HTMLElement;
+    const newMain = registry.renderRoot(main, state);
+    applyDiff(document.body, main, newMain);
+  });
+};
+
+render();

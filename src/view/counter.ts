@@ -11,8 +11,8 @@ const getTodoCount = (todos: Todo[]) => {
   return `${length} Items left`;
 };
 
-export default (targetElement: Element, { todos }: State) => {
-  const newCount = targetElement.cloneNode(true) as Element;
+export default (targetElement: HTMLElement, { todos }: State) => {
+  const newCount = targetElement.cloneNode(true) as HTMLElement;
   newCount.textContent = getTodoCount(todos);
   return newCount;
 };

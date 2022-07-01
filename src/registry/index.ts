@@ -1,11 +1,11 @@
 import { State } from "..";
 
 interface CloneRoot {
-  (root: Element): Element;
+  (root: HTMLElement): HTMLElement;
 }
 
 interface View {
-  (targetElement: Element, state: State): Element;
+  (targetElement: HTMLElement, state: State): HTMLElement;
 }
 
 interface Registry {
@@ -19,11 +19,11 @@ const add = (name: string, view: View) => {
 };
 
 const renderWrapper = (view: View | CloneRoot) => {
-  return (targetElement: Element, state: State) => {
+  return (targetElement: HTMLElement, state: State) => {
     const element = view(targetElement, state);
     const childComponents = element.querySelectorAll("[data-component]");
 
-    Array.from(childComponents).forEach((target) => {
+    (Array.from(childComponents) as HTMLElement[]).forEach((target) => {
       const name = (target as HTMLElement).dataset.component!;
       const child = registry[name];
 
@@ -36,9 +36,9 @@ const renderWrapper = (view: View | CloneRoot) => {
   };
 };
 
-const renderRoot = (root: Element, state: State) => {
-  const clone = (root: Element) => {
-    return root.cloneNode(true) as Element;
+const renderRoot = (root: HTMLElement, state: State) => {
+  const clone = (root: HTMLElement) => {
+    return root.cloneNode(true) as HTMLElement;
   };
 
   return renderWrapper(clone)(root, state);

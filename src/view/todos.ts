@@ -17,8 +17,8 @@ const getTodoElement = (todo: Todo) => {
   </li>`;
 };
 
-export default (targetElement: Element, { todos }: State) => {
-  const newTodoList = targetElement.cloneNode(true) as Element;
+export default (targetElement: HTMLElement, { todos }: State) => {
+  const newTodoList = targetElement.cloneNode(true) as HTMLElement;
   const todosElements = todos.map(getTodoElement).join("");
 
   newTodoList.innerHTML = todosElements;
