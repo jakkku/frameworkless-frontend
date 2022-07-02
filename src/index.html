@@ -19,38 +19,55 @@
     <script type="module" src="/index.ts" defer></script>
   </head>
   <body>
-    <section class="todoapp">
-      <header class="header">
-        <h1>todos</h1>
-        <input
-          class="new-todo"
-          placeholder="What needs to be done?"
-          autofocus
-        />
-      </header>
-      <section class="main">
-        <input id="toggle-all" class="toggle-all" type="checkbox" />
-        <label for="toggle-all">Mark all as complete</label>
-        <ul class="todo-list" data-component="todos"></ul>
+    <template id="todo-item">
+      <li>
+        <div class="view">
+          <input class="toggle" type="checkbox" />
+          <label></label>
+          <button class="destroy"></button>
+        </div>
+        <input class="edit" />
+      </li>
+    </template>
+
+    <template id="todo-app">
+      <section class="todoapp">
+        <header class="header">
+          <h1>todos</h1>
+          <input
+            class="new-todo"
+            placeholder="What needs to be done?"
+            autofocus
+          />
+        </header>
+        <section class="main">
+          <input id="toggle-all" class="toggle-all" type="checkbox" />
+          <label for="toggle-all">Mark all as complete</label>
+          <ul class="todo-list" data-component="todos"></ul>
+        </section>
+        <footer class="footer">
+          <span class="todo-count" data-component="counter">1 Item Left</span>
+          <ul class="filters" data-component="filters">
+            <li>
+              <a href="#/">All</a>
+            </li>
+            <li>
+              <a href="#/active">Active</a>
+            </li>
+            <li>
+              <a href="#/completed">Completed</a>
+            </li>
+          </ul>
+          <button class="clear-completed">Clear completed</button>
+        </footer>
       </section>
-      <footer class="footer">
-        <span class="todo-count" data-component="counter">1 Item Left</span>
-        <ul class="filters" data-component="filters">
-          <li>
-            <a href="#/">All</a>
-          </li>
-          <li>
-            <a href="#/active">Active</a>
-          </li>
-          <li>
-            <a href="#/completed">Completed</a>
-          </li>
-        </ul>
-        <button class="clear-completed">Clear completed</button>
+      <footer class="info">
+        <p>Double-click to edit a todo</p>
       </footer>
-    </section>
-    <footer class="info">
-      <p>Double-click to edit a todo</p>
-    </footer>
+    </template>
+
+    <div id="root">
+      <div data-component="app"></div>
+    </div>
   </body>
 </html>
