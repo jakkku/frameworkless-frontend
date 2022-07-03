@@ -30,10 +30,25 @@ const state: State = {
   currentFilter: "All",
 };
 
+const events = {
+  deleteItem: (index: number) => {
+    state.todos.splice(index, 1);
+    render();
+  },
+  addItem: (text: string) => {
+    state.todos.push({
+      text,
+      completed: false,
+    });
+    render();
+  },
+} as const;
+export type Events = typeof events;
+
 const render = () => {
   window.requestAnimationFrame(() => {
     const main = document.querySelector("#root")! as HTMLElement;
-    const newMain = registry.renderRoot(main, state);
+    const newMain = registry.renderRoot(main, state, events);
     applyDiff(document.body, main, newMain);
   });
 };

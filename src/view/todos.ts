@@ -1,4 +1,4 @@
-import { State, Todo } from "..";
+import { Events, State, Todo } from "..";
 
 let template: HTMLTemplateElement;
 
@@ -10,7 +10,7 @@ const createNewTodoNode = () => {
   return template.content.firstElementChild!.cloneNode(true) as HTMLElement;
 };
 
-const getTodoElement = (todo: Todo) => {
+const getTodoElement = (todo: Todo, index: number, events?: Events) => {
   const { text, completed } = todo;
 
   const element = createNewTodoNode();
@@ -23,17 +23,27 @@ const getTodoElement = (todo: Todo) => {
     (element.querySelector("input.toggle") as HTMLInputElement).checked = true;
   }
 
+  element
+    .querySelector("button.destroy")
+    ?.addEventListener("click", () => events?.deleteItem(index));
+
   return element;
 };
 
-export default (targetElement: HTMLElement, { todos }: State) => {
+export default (
+  targetElement: HTMLElement,
+  { todos }: State,
+  events?: Events
+) => {
   const newTodoList = targetElement.cloneNode(true) as HTMLElement;
 
   newTodoList.innerHTML = "";
 
-  todos.map(getTodoElement).forEach((element) => {
-    newTodoList.appendChild(element);
-  });
+  todos
+    .map((todo, index) => getTodoElement(todo, index, events))
+    .forEach((element) => {
+      newTodoList.appendChild(element);
+    });
 
   return newTodoList;
 };
