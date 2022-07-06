@@ -3,6 +3,7 @@
 ### 목차
 
 [chapter2 - 렌더링](#렌더링)  
+[chapter3 - DOM 이벤트 관리](#dom-이벤트-관리)
 <br>
 
 ## 2. 렌더링
@@ -74,3 +75,66 @@ A(애플리케이션) --> B(가상 DOM 노드) --> C(diff 알고리즘) --> D(�
 >
 > - [`Element.childNodes`](https://developer.mozilla.org/ko/docs/Web/API/Node/childNodes)
 > - [`Node.nodeType`](https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType)
+
+<br>
+
+## 3. DOM 이벤트 관리
+
+이벤트의 등록은 [`EventTarget.addEventListener`](https://developer.mozilla.org/ko/docs/Web/API/EventTarget/addEventListener)를 이용한다.
+
+> ❗️ DOM에 요소가 더이상 존재하지 않으면 메모리 누수를 방지하기 위하여 [`EventTarget.removeEventListener`](https://developer.mozilla.org/ko/docs/Web/API/EventTarget/addEventListener)를 사용해서 이벤트를 제거해줘야 한다.
+
+렌더링 함수(view)의 인터페이스를 수정하여 events를 추가해주고, eventListener를 부착해준다.
+
+```ts
+// index.ts
+const events = {
+  deleteItem: (index: number) => {
+    state.todos.splice(index, 1);
+    render();
+  },
+  addItem: (text: string) => {
+    state.todos.push({
+      text,
+      completed: false,
+    });
+    render();
+  },
+};
+
+const render = () => {
+  window.requestAnimationFrame(() => {
+    const main = document.querySelector("#root");
+    const newMain = registry.renderRoot(main, state, events);
+
+    applyDiff(document.body, main, newMain);
+  });
+};
+```
+
+### 이벤트 위임
+
+`data attributes`와 `event bubbling`을 이용하여 이벤트 위임을 적용한다.
+
+```ts
+// view/todos.ts
+const getTodoElement = (todo, index) => {
+  // ...
+  element.querySelector("button.destroy").dataset.index = index;
+
+  return element;
+};
+
+export default (targetElement, state, events) => {
+  // ...
+  newTodoList.addEventListener("click", (e) => {
+    if (e.target.matches("button.bestroy")) {
+      events.deleteItem(e.target.dataset.index);
+    }
+  });
+
+  return newTodoList;
+};
+```
+
+> ❗️ 이벤트 핸들러가 부착된 요소는 `non-fast scrollable region`으로 표시되기 때문에, 이벤트 위임 패턴을 사용할때 주의해야 한다. [참고](https://d2.naver.com/helloworld/6204533)
