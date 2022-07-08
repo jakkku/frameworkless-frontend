@@ -138,3 +138,102 @@ export default (targetElement, state, events) => {
 ```
 
 > ❗️ 이벤트 핸들러가 부착된 요소는 `non-fast scrollable region`으로 표시되기 때문에, 이벤트 위임 패턴을 사용할때 주의해야 한다. [참고](https://d2.naver.com/helloworld/6204533)
+
+<br>
+
+## 4. Web Component
+
+### API
+
+1. HTML Template
+2. Custom Elements ✅
+3. Shadow DOM
+
+### Custom Elements
+
+- `connectedCallback`: react의 componentDidMount와 유사하다.
+- `disconnectedCallback`: react의 componentWillUnmount와 유사하다.
+- `attributeChangedCallback`: 속성 중 하나가 추가,제거,변경될 때마다 호출된다. `static get observedAttributes`에 명시된 속성의 변경만 트리거한다.
+
+표준 요소에 속성을 설정하는 방법 3가지
+
+```ts
+<input type="text" value="Frameworkless" />;
+
+input.value = "Frameworkless";
+
+input.setAttribute("value", "Frameworkless");
+```
+
+표준 요소의 속성을 설정하는 방법과 동기화 시켜주기 위해 `getter`,`setter`를 활용할 수 있다.
+
+```ts
+const DEFAULT_COLOR = "black";
+
+export default class Helloworld extends HTMLElement {
+  static get observedAttributes() {
+    return ["color"];
+  }
+
+  get color() {
+    return this.getAttribute("color") || DEfAULT_COLOR;
+  }
+
+  set color(value) {
+    this.setAttribute("color", value);
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (!this.div) return;
+
+    if (name === "color") {
+      this.div.style.color = newValue;
+    }
+  }
+
+  connectedCallback() {
+    window.requestAnimationFrame(() => {
+      this.div = document.createElement("div");
+      this.div.textContent = "Hello World!";
+      this.div.style.color = this.color;
+      this.appendChild(this.div);
+    });
+  }
+}
+
+window.customElements.define("hello-world", HelloWorld);
+```
+
+```html
+<hello-world></hello-world>
+
+<hello-world color="red"></hello-world>
+```
+
+여기에 가상 DOM을 적용하면 아래와 같이 사용이 가능하다.
+
+```ts
+const createDomElement = (color: string) => {
+  const div = document.createElement("div");
+
+  div.textContent = "Hello World!";
+  div.style.color = color;
+
+  return div;
+};
+
+export default class Helloworld extends HTMLElement {
+  // ...
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (!this.hasChildNodes()) return;
+
+    applyDiff(this, this.firstElementChild, createDomElement(newValue));
+  }
+
+  connectedCallback() {
+    window.requestAnimationFrame(() => {
+      this.appendChild(createDomElement(this.color));
+    });
+  }
+}
+```
