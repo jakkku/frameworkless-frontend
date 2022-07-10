@@ -32,13 +32,13 @@ const registry = {
 ```
 
 추가로, root component에서 하위 모든 component의 data-component의 속성 값을 읽고, 재귀적으로 렌더링을 수행하도록 개선하자.  
-렌더링 함수를 순수 함수로 작성하였기 때문에 [렌더링 함수를 래핑하는 고차함수(HOC)](https://github.com/iamsungjinkim/frameworkless-frontend/blob/master/src/chapter2-3/registry/index.ts#L21)를 사용한다.  
+렌더링 함수를 순수 함수로 작성하였기 때문에 [렌더링 함수를 래핑하는 고차함수(HOC)](https://github.com/iamsungjinkim/frameworkless-frontend/blob/master/src/chapter/2-3/registry/index.ts#L21)를 사용한다.  
 <br>
 
 ### 가상 DOM
 
 기존의 DOM과 새롭게 렌더링된 DOM을 통째로 교체하는 방식은 큰 프로젝트에서 성능을 저하시킬 수 있다.  
-간단히 `reconciliation`을 구현해보자. [코드](https://github.com/iamsungjinkim/frameworkless-frontend/blob/master/src/chapter2-3/utils/applyDiff.ts)
+간단히 `reconciliation`을 구현해보자. [코드](https://github.com/iamsungjinkim/frameworkless-frontend/blob/master/src/chapter/2-3/utils/applyDiff.ts)
 
 ```mermaid
 flowchart LR
