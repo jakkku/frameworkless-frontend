@@ -16,9 +16,27 @@
       href="https://cdn.jsdelivr.net/npm/todomvc-app-css@2.1.2/index.css"
     />
     <title>Frameworkless Frontend</title>
-    <script type="module" src="/index.ts" defer></script>
+    <script type="module" src="index.ts" defer></script>
   </head>
   <body>
+    <template id="footer">
+      <footer class="footer">
+        <span class="todo-count">1 Item Left</span>
+        <ul class="filters">
+          <li>
+            <a href="#/">All</a>
+          </li>
+          <li>
+            <a href="#/active">Active</a>
+          </li>
+          <li>
+            <a href="#/completed">Completed</a>
+          </li>
+        </ul>
+        <button class="clear-completed">Clear completed</button>
+      </footer>
+    </template>
+
     <template id="todo-item">
       <li>
         <div class="view">
@@ -40,34 +58,17 @@
             autofocus
           />
         </header>
+
         <section class="main">
           <input id="toggle-all" class="toggle-all" type="checkbox" />
           <label for="toggle-all">Mark all as complete</label>
-          <ul class="todo-list" data-component="todos"></ul>
+          <todomvc-list></todomvc-list>
         </section>
-        <footer class="footer">
-          <span class="todo-count" data-component="counter">1 Item Left</span>
-          <ul class="filters" data-component="filters">
-            <li>
-              <a href="#/">All</a>
-            </li>
-            <li>
-              <a href="#/active">Active</a>
-            </li>
-            <li>
-              <a href="#/completed">Completed</a>
-            </li>
-          </ul>
-          <button class="clear-completed">Clear completed</button>
-        </footer>
+
+        <todomvc-footer></todomvc-footer>
       </section>
-      <footer class="info">
-        <p>Double-click to edit a todo</p>
-      </footer>
     </template>
 
-    <div id="root">
-      <div data-component="app"></div>
-    </div>
+    <todomvc-app></todomvc-app>
   </body>
 </html>
