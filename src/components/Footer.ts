@@ -2,11 +2,13 @@ import { State } from "./App";
 
 export const FOOTER_EVENTS = {
   CHANGE_FILTER: "CHANGE_FILTER",
+  CLEAR_COMPLETED: "CLEAR_COMPLETED",
 } as const;
 
 export class Footer extends HTMLElement {
   private template: HTMLTemplateElement;
   private filters: HTMLAnchorElement[];
+  private clearButton: HTMLButtonElement;
 
   constructor() {
     super();
@@ -16,10 +18,11 @@ export class Footer extends HTMLElement {
     this.appendChild(content);
 
     this.filters = Array.from(this.querySelectorAll("li a"));
+    this.clearButton = this.querySelector(".clear-completed")!;
   }
 
   static get observedAttributes() {
-    return ["todos", "currentFilter"];
+    return ["todos", "filter"];
   }
 
   get todos() {
@@ -30,31 +33,50 @@ export class Footer extends HTMLElement {
     this.setAttribute("todos", JSON.stringify(todos));
   }
 
-  get currentFilter() {
+  get filter() {
     try {
-      return JSON.parse(this.getAttribute("currentFilter") ?? "");
+      return JSON.parse(this.getAttribute("filter") ?? "");
     } catch (e) {
       return "All";
     }
   }
 
-  set currentFilter(filter: State["currentFilter"]) {
-    this.setAttribute("currentFilter", JSON.stringify(filter));
+  set filter(filter: State["filter"]) {
+    this.setAttribute("filter", JSON.stringify(filter));
   }
 
   updateFooter() {
     this.filters.forEach((a) => {
-      a.textContent === this.currentFilter
+      a.textContent === this.filter
         ? a.classList.add("selected")
         : a.classList.remove("selected");
     });
   }
 
   connectedCallback() {
+    this.filters.forEach((a) => {
+      a.addEventListener("click", (e) => {
+        if (e.target instanceof HTMLAnchorElement) {
+          const event = new CustomEvent(FOOTER_EVENTS.CHANGE_FILTER, {
+            detail: {
+              filter: e.target.textContent,
+            },
+          });
+
+          this.dispatchEvent(event);
+        }
+      });
+    });
+
+    this.clearButton.addEventListener("click", () => {
+      const event = new CustomEvent(FOOTER_EVENTS.CLEAR_COMPLETED);
+      this.dispatchEvent(event);
+    });
+
     this.updateFooter();
   }
 
-  attributesChangedCallback() {
+  attributeChangedCallback() {
     this.updateFooter();
   }
 }

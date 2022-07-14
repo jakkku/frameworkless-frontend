@@ -1,4 +1,4 @@
-import { Footer } from "./Footer";
+import { Footer, FOOTER_EVENTS } from "./Footer";
 import { LIST_EVENTS, List } from "./TodoList";
 
 export type Todo = {
@@ -7,7 +7,7 @@ export type Todo = {
 };
 
 export type State = {
-  currentFilter: "All" | "Active" | "Completed";
+  filter: "All" | "Active" | "Completed";
   todos: Todo[];
 };
 
@@ -22,7 +22,7 @@ class App extends HTMLElement {
     super();
     this.state = {
       todos: [],
-      currentFilter: "All",
+      filter: "All",
     };
     this.template = document.getElementById("todo-app")! as HTMLTemplateElement;
 
@@ -44,15 +44,31 @@ class App extends HTMLElement {
     this.syncAttributes();
   }
 
-  changeFilter(filter: State["currentFilter"]) {
-    this.state.currentFilter = filter;
+  toggleItem(targetIndex: number) {
+    this.state.todos = this.state.todos.map((todo, index) => {
+      if (targetIndex !== index) {
+        return todo;
+      }
+
+      return { ...todo, completed: !todo.completed };
+    });
+    this.syncAttributes();
+  }
+
+  changeFilter(filter: State["filter"]) {
+    this.state.filter = filter;
+    this.syncAttributes();
+  }
+
+  clearCompleted() {
+    this.state.todos = this.state.todos.filter(({ completed }) => !completed);
     this.syncAttributes();
   }
 
   syncAttributes() {
     this.list.todos = this.state.todos;
     this.footer.todos = this.state.todos;
-    this.footer.currentFilter = this.state.currentFilter;
+    this.footer.filter = this.state.filter;
   }
 
   connectedCallback() {
@@ -70,7 +86,19 @@ class App extends HTMLElement {
       });
 
       this.list.addEventListener(LIST_EVENTS.DELETE_ITEM, (e) => {
-        this.deleteItem((e as CustomEvent).detail.index);
+        const targetIndex = parseInt((e as CustomEvent).detail.index);
+        this.deleteItem(targetIndex);
+      });
+      this.list.addEventListener(LIST_EVENTS.TOGGLE_ITEM, (e) => {
+        const targetIndex = parseInt((e as CustomEvent).detail.index);
+        this.toggleItem(targetIndex);
+      });
+
+      this.footer.addEventListener(FOOTER_EVENTS.CHANGE_FILTER, (e) => {
+        this.changeFilter((e as CustomEvent).detail.filter);
+      });
+      this.footer.addEventListener(FOOTER_EVENTS.CLEAR_COMPLETED, () => {
+        this.clearCompleted();
       });
 
       this.syncAttributes();

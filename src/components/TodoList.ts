@@ -1,9 +1,11 @@
+import getParentElement from "../utils/getParentElement";
 import { Todo } from "./App";
 
 const TEMPLATE = '<ul class="todo-list"></ul>';
 
 export const LIST_EVENTS = {
   DELETE_ITEM: "DELETE_ITEM",
+  TOGGLE_ITEM: "TOGGLE_ITEM",
 } as const;
 
 export class List extends HTMLElement {
@@ -38,6 +40,13 @@ export class List extends HTMLElement {
     this.dispatchEvent(event);
   }
 
+  onToggle(index: string) {
+    const event = new CustomEvent(LIST_EVENTS.TOGGLE_ITEM, {
+      detail: { index },
+    });
+    this.dispatchEvent(event);
+  }
+
   createNewTodoNode() {
     return this.itemTemplate.content.firstElementChild!.cloneNode(
       true
@@ -48,6 +57,7 @@ export class List extends HTMLElement {
     const { text, completed } = todo;
     const todoElement = this.createNewTodoNode();
 
+    todoElement.dataset.index = index.toString();
     (todoElement.querySelector("input.edit") as HTMLInputElement).value = text;
     (todoElement.querySelector("label") as HTMLLabelElement).textContent = text;
 
@@ -56,10 +66,6 @@ export class List extends HTMLElement {
       (todoElement.querySelector("input.toggle") as HTMLInputElement).checked =
         true;
     }
-
-    (
-      todoElement.querySelector("button.destroy") as HTMLButtonElement
-    ).dataset.index = index.toString();
 
     return todoElement;
   }
@@ -74,9 +80,14 @@ export class List extends HTMLElement {
   connectedCallback() {
     this.list.addEventListener("click", (e) => {
       const element = e.target as HTMLElement;
+      const index = getParentElement(element, "LI")?.dataset.index;
 
-      if (element.matches("button.destroy") && element.dataset.index) {
-        this.onDeleteItem(element.dataset.index);
+      if (element.matches("button.destroy") && index) {
+        this.onDeleteItem(index);
+      }
+
+      if (element.matches("input.toggle") && index) {
+        this.onToggle(index);
       }
     });
 
