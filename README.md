@@ -3,7 +3,8 @@
 ### 목차
 
 [chapter2 - 렌더링](#렌더링)  
-[chapter3 - DOM 이벤트 관리](#dom-이벤트-관리)
+[chapter3 - DOM 이벤트 관리](#dom-이벤트-관리)  
+[chapter4 - web component](#4-web-component)
 <br>
 
 ## 2. 렌더링
