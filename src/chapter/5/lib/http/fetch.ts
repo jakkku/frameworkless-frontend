@@ -1,11 +1,6 @@
-type Params = {
-  url: string;
-  body?: any;
-  headers?: Headers;
-  method?: Method;
-};
-type Headers = { [key: string]: string };
-type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+import { Params } from ".";
+
+type Headers = Params["headers"];
 
 const parseResponse = async <T>(response: Response) => {
   const { status } = response;
@@ -51,7 +46,7 @@ const patch = async <T>(url: string, body?: any, headers?: Headers) => {
   return response.data;
 };
 
-const deleteRequest = async <T>(url: string, body?: any, headers?: Headers) => {
+const deleteRequest = async <T>(url: string, headers?: Headers) => {
   const response = await request<T>({ url, headers, method: "DELETE" });
   return response.data;
 };

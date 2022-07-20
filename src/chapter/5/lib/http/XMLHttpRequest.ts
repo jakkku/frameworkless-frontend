@@ -1,18 +1,14 @@
-type Params = {
-  url: string;
-  body?: any;
-  headers?: Headers;
-  method?: Method;
-};
-type Headers = { [key: string]: string };
-type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+import { Params } from ".";
 
+type Headers = NonNullable<Params["headers"]>;
 type Response<T> = {
   status: number;
   data: T;
 };
 
 const setHeaders = (xhr: XMLHttpRequest, headers: Headers) => {
+  if (!headers) return;
+
   Object.entries(headers).forEach((header) => {
     const [name, value] = header;
 
@@ -53,28 +49,28 @@ const request = <T>({ method = "GET", url, headers = {}, body }: Params) => {
   });
 };
 
-const get = async (url: string, headers?: Headers) => {
-  const response = await request({ url, headers });
+const get = async <T>(url: string, headers?: Headers) => {
+  const response = await request<T>({ url, headers });
   return response.data;
 };
 
-const post = async (url: string, body: any, headers?: Headers) => {
-  const response = await request({ url, headers, method: "POST", body });
+const post = async <T>(url: string, body?: any, headers?: Headers) => {
+  const response = await request<T>({ url, headers, method: "POST", body });
   return response.data;
 };
 
-const put = async (url: string, body: any, headers?: Headers) => {
-  const response = await request({ url, headers, method: "PUT", body });
+const put = async <T>(url: string, body?: any, headers?: Headers) => {
+  const response = await request<T>({ url, headers, method: "PUT", body });
   return response.data;
 };
 
-const patch = async (url: string, body: any, headers: Headers) => {
-  const response = await request({ url, headers, method: "PATCH", body });
+const patch = async <T>(url: string, body?: any, headers?: Headers) => {
+  const response = await request<T>({ url, headers, method: "PATCH", body });
   return response.data;
 };
 
-const deleteRequest = async (url: string, headers: Headers) => {
-  const response = await request({ url, headers, method: "DELETE" });
+const deleteRequest = async <T>(url: string, headers?: Headers) => {
+  const response = await request<T>({ url, headers, method: "DELETE" });
   return response.data;
 };
 
