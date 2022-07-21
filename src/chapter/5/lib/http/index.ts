@@ -1,10 +1,39 @@
-import XMLHttpRequest from "./XMLHttpRequest";
+export type Params = {
+  url: string;
+  body?: any;
+  headers?: Headers;
+  method?: Method;
+};
+type Headers = { [key: string]: string };
+type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
-const userAgent = window.navigator.userAgent;
+interface HttpClient {
+  get: HttpRequest;
+  post: HttpRequest;
+  put: HttpRequest;
+  patch: HttpRequest;
+  delete: HttpRequest;
+}
+type HttpRequest = <T>(params: Params) => Promise<T>;
 
-// v10 이하의 IE
-const isIE = () => /MSIE/gi.test(userAgent);
+class Http {
+  constructor(private httpClient: HttpClient) {}
 
-const http = XMLHttpRequest;
+  get<T>(params: Params) {
+    return this.httpClient.get<T>(params);
+  }
+  post<T>(params: Params) {
+    return this.httpClient.post<T>(params);
+  }
+  put<T>(params: Params) {
+    return this.httpClient.put<T>(params);
+  }
+  patch<T>(params: Params) {
+    return this.httpClient.patch<T>(params);
+  }
+  delete<T>(params: Params) {
+    return this.httpClient.delete<T>(params);
+  }
+}
 
-export default http;
+export default Http;
