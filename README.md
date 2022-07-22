@@ -4,7 +4,8 @@
 
 [chapter2 - 렌더링](#렌더링)  
 [chapter3 - DOM 이벤트 관리](#dom-이벤트-관리)  
-[chapter4 - web component](#4-web-component)
+[chapter4 - web component](#4-web-component)  
+[chapter5 - http 요청](#5-http-요청)  
 <br>
 
 ## 2. 렌더링
@@ -238,3 +239,31 @@ export default class Helloworld extends HTMLElement {
   }
 }
 ```
+
+<br>
+
+## 5. HTTP 요청
+
+- XMLHttpRequest
+- Fetch
+- axios
+
+```mermaid
+flowchart LR
+A[Fetch]
+B[XHR]
+C[axios]
+D['interface'\n HTTPClient]
+E[model]
+A-->D
+B-->D
+C-->D
+D---E
+```
+
+> 구현이 아닌 인터페이스로 프로그래밍하라. - 갱 오브 포(Gang of Four)
+
+또한 컨트롤러에서 직접 HTTP 클라이언트를 사용하는 것 보다, 모델 객체에 래핑하는 것의 장점이 있다. (ex: Todos model)
+
+1. 테스트 가능성: 모델 객체를 fixture를 반환하는 mock으로 바꿀 수 있어서, 컨트롤러를 독립적으로 테스트할 수 있다.
+2. 가독성: 모델 객체는 코드를 더 명확히 만든다.
