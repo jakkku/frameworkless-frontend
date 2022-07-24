@@ -1,4 +1,5 @@
-export type Component = () => void;
+export type Component = (params?: Params) => void;
+export type Params = { [paramKey: string]: string | number };
 
 export default (container: HTMLElement) => {
   const home: Component = () => {
@@ -13,5 +14,15 @@ export default (container: HTMLElement) => {
     container.textContent = "Page Not Found!";
   };
 
-  return { home, list, notFound };
+  const detail: Component = (params: Params = {}) => {
+    const { id } = params;
+    container.textContent = `This is Detail with id ${id}`;
+  };
+
+  const anotherDetail: Component = (params: Params = {}) => {
+    const { id, anotherId } = params;
+    container.textContent = `This is another Detail with id ${id} and anotherId ${anotherId}`;
+  };
+
+  return { home, list, notFound, detail, anotherDetail };
 };
