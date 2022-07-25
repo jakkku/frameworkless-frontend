@@ -6,6 +6,7 @@
 [chapter3 - DOM 이벤트 관리](#dom-이벤트-관리)  
 [chapter4 - web component](#4-web-component)  
 [chapter5 - http 요청](#5-http-요청)  
+[chapter6 - 라우팅](#6-라우팅)  
 <br>
 
 ## 2. 렌더링
@@ -267,3 +268,33 @@ D---E
 
 1. 테스트 가능성: 모델 객체를 fixture를 반환하는 mock으로 바꿀 수 있어서, 컨트롤러를 독립적으로 테스트할 수 있다.
 2. 가독성: 모델 객체는 코드를 더 명확히 만든다.
+
+<br>
+
+## 6. 라우팅
+
+### 6-1. Fragment identifiers 기반
+
+```ts
+router
+  .addRoutes("#/", pages.home)
+  .addRoutes("#/list", pages.list)
+  .addRoutes("#/list/:id", pages.detail)
+  .addRoutes("#/list/:id/:anotherId", pages.anotherDetail);
+```
+
+location hash를 이용하는 방식으로, 각 hash에 해당하는 컴포넌트를 등록해 놓고 eventListener로 컨테이너 컴포넌트를 바꿔주는 방식이다.  
+`Dynamic Route`를 위해서 route를 등록하는 시점에 정규표현식을 이용하여 처리를 해주면 된다.
+
+```ts
+// input: #/list/:id/:anotherId
+{
+  testRegex: '^#\/list\/([^\\/]+)\/([^\\/]+)$',
+  paramNames: ['id', 'anotherId'],
+}
+```
+
+`#/list/:id/:anotherId`의 경우, 위와 같은 데이터 형태로 변환하여 컴포넌트와 함께 저장한다.  
+이후 hash를 검사하는 부분에서 위의 데이터를 이용하여 일치하는 컴포넌트를 확인하고 `paramName`과 값을 추출하여 컴포넌트를 렌더링한다.
+
+[자세한 변환 과정](https://github.com/iamsungjinkim/frameworkless-frontend/blob/master/src/chapter/6/router.ts#L54)은 코드로 확인할 수 있고, 그 과정에서 사용한 `replace`의 두번째 인자로 함수를 전달하는 방법과 해당 함수(replacement)가 받는 인자에 대해서는 [MDN](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String/replace#%EB%A7%A4%EA%B0%9C%EB%B3%80%EC%88%98%EA%B0%80_function%EC%9C%BC%EB%A1%9C_%EC%A7%80%EC%A0%95%EB%90%98%EC%97%88%EC%9D%84_%EB%95%8C) 문서를 참고한다.
