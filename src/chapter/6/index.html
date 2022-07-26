@@ -12,12 +12,24 @@
   </head>
   <body>
     <header>
-      <button data-navigate="/">Go To Index</button>
-      <button data-navigate="/list">Go To List</button>
-      <button data-navigate="/list/1">Go To Detail with id 1</button>
-      <button data-navigate="/list/2">Go To Detail with id 2</button>
-      <button data-navigate="/list/1/2">Go To Another Detail</button>
-      <button data-navigate="/dummy">Dummy Page</button>
+      <div>
+        <h2>Navigation with fragment</h2>
+        <button data-navigate="#/">Go To Index</button>
+        <button data-navigate="#/list">Go To List</button>
+        <button data-navigate="#/list/1">Go To Detail with id 1</button>
+        <button data-navigate="#/list/2">Go To Detail with id 2</button>
+        <button data-navigate="#/list/1/2">Go To Another Detail</button>
+        <button data-navigate="#/dummy">Dummy Page</button>
+      </div>
+      <div>
+        <h2>Navigation with history</h2>
+        <a data-navigation href="/">Go To Index</a>
+        <a data-navigation href="/list">Go To List</a>
+        <a data-navigation href="/list/1">Go To Detail with id 1</a>
+        <a data-navigation href="/list/2">Go To Detail with id 2</a>
+        <a data-navigation href="/list/1/2">Go To Another Detail</a>
+        <a data-navigation href="/dummy">Dummy Page</a>
+      </div>
     </header>
     <main></main>
   </body>
