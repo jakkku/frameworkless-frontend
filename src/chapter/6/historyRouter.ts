@@ -12,9 +12,6 @@ const URL_FRAGMENT_REGEX = "([^\\/]+)";
 const TICKTIME = 250;
 const NAV_A_SELECTOR = "a[data-navigation]";
 
-const prefixPathName = window.location.pathname;
-const withPrefix = (path: string) => prefixPathName + path;
-
 const extractUrlParams = (route: Route, windowHash: string) => {
   if (!route.paramNames.length) {
     return {};
@@ -61,7 +58,7 @@ export default () => {
     addRoutes: (path: string, component: Component) => {
       const paramNames: ParamNames = [];
 
-      const parsedPath = withPrefix(path)
+      const parsedPath = path
         .replace(ROUTE_PARAMETER_REGEX, (_, paramName: string) => {
           paramNames.push(paramName);
           return URL_FRAGMENT_REGEX;
@@ -91,12 +88,12 @@ export default () => {
           const anchor = e.target as HTMLAnchorElement;
 
           e.preventDefault();
-          router.navigate(anchor.pathname);
+          router.navigate(anchor.href);
         });
       });
     },
     navigate: (path: string) => {
-      window.history.pushState(null, "", withPrefix(path));
+      window.history.pushState(null, "", path);
     },
   };
 

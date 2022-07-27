@@ -18,10 +18,10 @@ fragmentRouter
   .start();
 
 historyRouter
-  .addRoutes("/", pages.home)
-  .addRoutes("/list", pages.list)
-  .addRoutes("/list/:id", pages.detail)
-  .addRoutes("/list/:id/:anotherId", pages.anotherDetail)
+  .addRoutes("/chapter/6/", pages.home)
+  .addRoutes("/chapter/6/list", pages.list)
+  .addRoutes("/chapter/6/list/:id", pages.detail)
+  .addRoutes("/chapter/6/list/:id/:anotherId", pages.anotherDetail)
   .setNotFound(pages.notFound)
   .start();
 

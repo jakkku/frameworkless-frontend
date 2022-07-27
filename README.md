@@ -298,3 +298,12 @@ location hash를 이용하는 방식으로, 각 hash에 해당하는 컴포넌�
 이후 hash를 검사하는 부분에서 위의 데이터를 이용하여 일치하는 컴포넌트를 확인하고 `paramName`과 값을 추출하여 컴포넌트를 렌더링한다.
 
 [자세한 변환 과정](https://github.com/iamsungjinkim/frameworkless-frontend/blob/master/src/chapter/6/router.ts#L54)은 코드로 확인할 수 있고, 그 과정에서 사용한 `replace`의 두번째 인자로 함수를 전달하는 방법과 해당 함수(replacement)가 받는 인자에 대해서는 [MDN](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String/replace#%EB%A7%A4%EA%B0%9C%EB%B3%80%EC%88%98%EA%B0%80_function%EC%9C%BC%EB%A1%9C_%EC%A7%80%EC%A0%95%EB%90%98%EC%97%88%EC%9D%84_%EB%95%8C) 문서를 참고한다.
+
+### 6-2 History API 기반
+
+`Fragment identifiers`방식과 매우 유사하다.  
+대신 hash가 아닌 `http://localhost:3000/list/1/2`와 같은 실제 URL을 사용한다. `vite`를 사용한 multi-page app으로 구조를 작성하는 관계로 `http://localhost:3000/chapter/6/list/1/2`과 같은 URL로 사용하였다.
+
+hash를 사용하는 방식에서는 `hashchange`이벤트를 받아서 라우팅을 해줬으나, URL의 변경을 받을 DOM 이벤트가 없어서 `setInterval`을 사용하여 정기적으로 라우팅 체크를 해줬다.  
+URL의 변경은 `history.pushState`를 사용하였고, 네비게이션 버튼으로 `<a>`태그를 사용하였다.  
+`history.pushState(null, '', a.href)`와 같은 방식으로 URL을 변경해주면 된다.
