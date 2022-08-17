@@ -33,11 +33,23 @@ const modelFactory = (initialState = INITIAL_STATE) => {
     });
   };
 
+  const toggleItemCompleted = (index: number) => {
+    if (index < 0 || !state.todos[index]) {
+      return;
+    }
+
+    state.todos[index].completed = !state.todos[index].completed;
+  };
+
   const deleteItem = (index: number) => {
+    if (index < 0 || !state.todos[index]) {
+      return;
+    }
+
     state.todos.splice(index, 1);
   };
 
-  return { addItem, deleteItem, getState };
+  return { addItem, deleteItem, toggleItemCompleted, getState };
 };
 
 export default modelFactory;

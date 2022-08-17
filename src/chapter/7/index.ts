@@ -26,6 +26,10 @@ const events = {
     model.addItem(text);
     render(model.getState());
   },
+  toggleItemCompleted: (index: number) => {
+    model.toggleItemCompleted(index);
+    render(model.getState());
+  },
 } as const;
 
 export type Events = typeof events;
