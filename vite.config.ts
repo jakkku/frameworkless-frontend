@@ -15,6 +15,7 @@ export default defineConfig({
         "chapter/2-3": resolve(root, "chapter/2-3/index.html"),
         "chapter/4": resolve(root, "chapter/4/index.html"),
         "chapter/6": resolve(root, "chapter/6/index.html"),
+        "chapter/7": resolve(root, "chapter/7/index.html"),
       },
     },
   },
