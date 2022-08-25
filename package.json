@@ -2,15 +2,17 @@
   "name": "frameworkless-frontend",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "tsc --project tsconfig.build.json && vite build",
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "packageManager": "yarn@3.2.1",
   "devDependencies": {
     "@faker-js/faker": "^7.3.0",
     "@types/node": "^18.0.0",
     "typescript": "^4.7.4",
-    "vite": "^2.9.13"
+    "vite": "^2.9.13",
+    "vitest": "^0.22.1"
   },
   "dependencies": {
     "axios": "^0.27.2"

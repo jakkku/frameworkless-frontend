@@ -7,6 +7,7 @@
 [chapter4 - web component](#4-web-component)  
 [chapter5 - http 요청](#5-http-요청)  
 [chapter6 - 라우팅](#6-라우팅)  
+[chapter7 - 상태 관리](#7-상태-관리)  
 <br>
 
 ## 2. 렌더링
@@ -307,3 +308,7 @@ location hash를 이용하는 방식으로, 각 hash에 해당하는 컴포넌�
 hash를 사용하는 방식에서는 `hashchange`이벤트를 받아서 라우팅을 해줬으나, URL의 변경을 받을 DOM 이벤트가 없어서 `setInterval`을 사용하여 정기적으로 라우팅 체크를 해줬다.  
 URL의 변경은 `history.pushState`를 사용하였고, 네비게이션 버튼으로 `<a>`태그를 사용하였다.  
 `history.pushState(null, '', a.href)`와 같은 방식으로 URL을 변경해주면 된다.
+
+<br>
+
+## 7. 상태 관리

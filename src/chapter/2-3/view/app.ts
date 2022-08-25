@@ -21,7 +21,7 @@ const addEvents = (target: HTMLElement, events: Events) => {
   });
 };
 
-export default (target: HTMLElement, state: State, events?: Events) => {
+export default (target: HTMLElement, _state: State, events?: Events) => {
   const newApp = target.cloneNode(true) as HTMLElement;
 
   newApp.innerHTML = "";
