@@ -1,26 +1,30 @@
 import modelFactory from "./model";
-import { describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
 
 describe("external state", () => {
+  let model: ReturnType<typeof modelFactory>;
+
+  beforeEach(() => {
+    model = modelFactory();
+  });
+
   test("should add an item", () => {
-    const state = modelFactory();
-    const { todos: prevTodos } = state.getState();
+    const { todos: prevTodos } = model.getState();
 
-    state.addItem("dummy");
+    model.addItem("dummy");
 
-    const { todos } = state.getState();
+    const { todos } = model.getState();
 
     expect(todos.length).toBe(prevTodos.length + 1);
     expect(todos.at(-1)).toEqual({ text: "dummy", completed: false });
   });
 
   test("should not add an item when a falsy text is provided", () => {
-    const state = modelFactory();
-    const { todos: prevTodos } = state.getState();
+    const { todos: prevTodos } = model.getState();
 
-    state.addItem("");
+    model.addItem("");
 
-    const { todos } = state.getState();
+    const { todos } = model.getState();
 
     expect(todos.length).toBe(prevTodos.length);
   });
