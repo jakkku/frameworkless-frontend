@@ -1,5 +1,6 @@
 import Fps from "./Fps";
 import modelFactory, { State } from "./model/model";
+import observableModelFactory from "./model/observableModel";
 import registry from "./registry";
 import applyDiff from "./utils/applyDiff";
 
@@ -15,8 +16,19 @@ registry.add("todos", todosView);
 registry.add("counter", counterView);
 registry.add("filters", filtersView);
 
-const model = modelFactory();
+const observableModel = observableModelFactory();
+const { addChangeListener, getState: _getState, ...obEvents } = observableModel;
 
+const obRender = (state: State) => {
+  window.requestAnimationFrame(() => {
+    const main = document.querySelector("#root")! as HTMLElement;
+    const newMain = registry.renderRoot(main, state, obEvents);
+
+    applyDiff(document.body, main, newMain);
+  });
+};
+
+const model = modelFactory();
 const events = {
   deleteItem: (index: number) => {
     model.deleteItem(index);
@@ -32,8 +44,6 @@ const events = {
   },
 } as const;
 
-export type Events = typeof events;
-
 const render = (state: State) => {
   window.requestAnimationFrame(() => {
     const main = document.querySelector("#root")! as HTMLElement;
@@ -42,4 +52,21 @@ const render = (state: State) => {
   });
 };
 
-render(model.getState());
+const USE_OBSERVAL_MODEL = true;
+
+if (USE_OBSERVAL_MODEL) {
+  addChangeListener(obRender);
+  addChangeListener((state) => {
+    console.log(`Current State (${new Date().getTime()})`, state);
+  });
+  addChangeListener((state) => {
+    Promise.resolve().then(() => {
+      window.localStorage.setItem("state", JSON.stringify(state));
+    });
+  });
+} else {
+  render(model.getState());
+}
+
+export type Events = typeof events;
+export type ObEvents = typeof obEvents;
